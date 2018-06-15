@@ -1,0 +1,38 @@
+{
+  "name": "mars-rover",
+  "version": "1.0.0",
+  "description": "Mars Rover implementation with testing",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "author": "Alexander Teno",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.1.0",
+    "jest": "^23.1.0",
+    "ts-jest": "^22.4.6"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testRegex": ".*\\.test\\.(ts)$"
+  }
+}
