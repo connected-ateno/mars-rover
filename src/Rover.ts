@@ -3,9 +3,12 @@ import RoverOrientation from '../enums/RoverOrientation';
 import RoverCommand from '../enums/RoverCommand';
 import Terrain from './Terrain';
 
-const FORWARD_MODIFIER = 1;
-const BACKWARD_MODIFIER = -1;
+const FORWARD_MODIFIER = 0;
+const BACKWARD_MODIFIER = Math.PI;
+const RIGHT_MODIFIER = -1;
+const LEFT_MODIFIER = 1;
 const ORIENTATIONS_COUNT = 4;
+const PI_OVER_TWO = Math.PI / 2;
 
 class Rover {
 
@@ -17,31 +20,11 @@ class Rover {
     this.roverOrientation = roverOrientation;
   }
 
+  // Converts the orientations to radians and then calculates the
+  // deltaX and deltaY to be applied.
   getVelocity(directionModifier: number): { x: number, y: number } {
-    switch (this.roverOrientation) {
-      case RoverOrientation.NORTH:
-        return {
-          x: 0,
-          y: -1 * directionModifier,
-        };
-      case RoverOrientation.EAST:
-        return {
-          x: directionModifier,
-          y: 0,
-        };
-      case RoverOrientation.SOUTH:
-        return {
-          x: 0,
-          y: directionModifier,
-        };
-      case RoverOrientation.WEST:
-        return {
-          x: -1 * directionModifier,
-          y: 0,
-        };
-      default:
-        throw Error(`Unrecognized orientation ${RoverOrientation[this.roverOrientation]}`);
-    }
+    const orientation: number = (PI_OVER_TWO * Number(this.roverOrientation)) + directionModifier;
+    return {x: Math.round(Math.cos(orientation)), y: -Math.round(Math.sin(orientation))};
   }
 
   execute(commands: RoverCommand[], terrain: Terrain): void {
@@ -56,10 +39,10 @@ class Rover {
           this.move(BACKWARD_MODIFIER, terrain);
           break;
         case RoverCommand.RIGHT:
-          this.rotate(FORWARD_MODIFIER);
+          this.rotate(RIGHT_MODIFIER);
           break;
         case RoverCommand.LEFT:
-          this.rotate(BACKWARD_MODIFIER);
+          this.rotate(LEFT_MODIFIER);
           break;
         default:
           throw Error(`Unrecognized command ${RoverCommand[command]}`);
@@ -80,6 +63,7 @@ class Rover {
     this.position = new Point(nextX, nextY);
   }
 
+  // Works by looping through the enumeration
   private rotate(directionModifier: number): void {
     const initialOrientation = Number(this.roverOrientation);
     this.roverOrientation = (initialOrientation + directionModifier + ORIENTATIONS_COUNT) % ORIENTATIONS_COUNT;
