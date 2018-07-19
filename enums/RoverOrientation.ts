@@ -1,8 +1,8 @@
 enum RoverOrientation {
-  NORTH = 0,
-  EAST = 1,
-  SOUTH = 2,
-  WEST = 3,
+  EAST = 0,
+  NORTH = 1,
+  WEST = 2,
+  SOUTH = 3,
 }
 
 export default RoverOrientation;
